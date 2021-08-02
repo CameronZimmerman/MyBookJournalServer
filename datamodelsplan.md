@@ -1,0 +1,19 @@
+# Users
+  - id
+  - name
+  - email
+  - hash
+
+# Entries
+  - id
+  - date
+  - start_date
+  - finish_date
+  - title
+  - author
+  - page_count
+  - star_rating
+  - first_line
+  - last_line
+  - publish_date
+  - text
