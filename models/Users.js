@@ -17,7 +17,7 @@ module.exports = class Users {
     try {
       await pool.query(
         `
-        DROP TABLE IF EXISTS "users";
+        DROP TABLE IF EXISTS "users" CASCADE;
         CREATE TABLE users (
           id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
           name TEXT NOT NULL,

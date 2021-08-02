@@ -2,10 +2,10 @@
   "name": "mybookjournalserver",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start" : "node server.js",
-    "start:watch" : "nodemon server.js",
+    "start" : "node lib/server.js",
+    "start:watch" : "nodemon lib/server.js",
     "create-tables": "node data/create-tables.js",
     "drop-tables": "node data/drop-tables.js",
     "load-seed-data": "node data/load-seed-data.js",

@@ -1,6 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const jwt = require('..lib/utils/jwt');
+const jwt = require('../lib/utils/jwt');
 const checkAuth = require('../middleware/check-auth')
 const Users = require('../models/Users')
 
@@ -20,11 +20,11 @@ const createAuthRoutes = () => {
   })
 
   router.post('/signup', async (req, res) => {
-    const { password, ...user } = req.body
-    const email = user.email
+    const { password, email, name } = req.body
 
     if(!email || !password) {
       res.status(400).json({ error: 'email and password required' })
+      return
     }
 
     const foundUser = await Users.Select(email)
@@ -33,12 +33,12 @@ const createAuthRoutes = () => {
       res.status(400).json({ error: 'email already exists' })
     }
 
-    const newUser = await Users.Insert(user, bcrypt.hashSync(password, 8))
+    const newUser = await Users.Insert({name, email}, bcrypt.hashSync(password, 8))
 
     res.json(getProfileWithToken(newUser))
   })
 
-  router.post('/signin', (req, res) => {
+  router.post('/signin', async (req, res) => {
     const body = req.body
     const email = body.email
     const password = body.password
@@ -49,7 +49,7 @@ const createAuthRoutes = () => {
     }
 
     const foundUser = await Users.Select(email)
-    if (!foundUser || !bcrypt.compareSync(password, user.hash)) {
+    if (!foundUser || !bcrypt.compareSync(password, foundUser.hash)) {
       res.status(400).json({error: 'email or password not correct'})
       return
     }
