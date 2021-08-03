@@ -90,11 +90,28 @@ module.exports = class Entries {
     }
   }
 
-  static async getAll(userId) {
+  static async getByQuery(query, userId, sortBy) {
+    try {
+      console.log(query)
+      const { rows } = await pool.query(
+        `
+        SELECT * FROM entries WHERE title ILIKE $1 OR author ILIKE $1 and user_id = $2
+        ${sortBy? `ORDER BY ${sortBy} ASC`: ''}
+      `,
+      [`${query}%`, userId]
+      )
+      return rows.map(row => new Entries(row))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  static async getAll(userId, sortBy) {
     try {
       const { rows } = await pool.query(
         `
         SELECT * FROM entries WHERE user_id = $1
+        ${sortBy? `ORDER BY ${sortBy} ASC`: ''}
       `,
       [userId]
       )
